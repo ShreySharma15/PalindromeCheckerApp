@@ -6,36 +6,33 @@
  * This class represents the palindrome checker app
  *
  * At this stage, the application:
- * - Validates a palindrome by using both Queue (FIFO)
- * - and Stack (LIFO) data structures to compare characters.
+ * - Validates a palindrome using a Deque by
+ * - comparing front and rear characters directly.
  * - Displays formatted result on console
  *
  *
  * @author Shrey Sharma
- * @version 6.0
+ * @version 7.0
  */
 
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class PalindromeCheckerApp {
     public static void main(String[] args) {
-        String input = "civic";
-
-        Queue<Character> queue = new LinkedList<>();        
-        Stack<Character> stack = new Stack<>();
+        String input = "refer";
+        Deque<Character> deque = new ArrayDeque<>();
 
         for (char c : input.toCharArray()) {
-            queue.add(c);
-            stack.push(c);
+            deque.add(c);
         }
 
         boolean isPalindrome = true;
 
-        while(!queue.isEmpty()) {
-            if(queue.remove() != stack.pop()){
-                isPalindrome=false;
+        while (deque.size() > 1) {
+
+            if (deque.removeFirst() != deque.removeLast()) {
+                isPalindrome = false;
                 break;
             }
         }
