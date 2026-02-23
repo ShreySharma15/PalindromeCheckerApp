@@ -1,42 +1,41 @@
 /*
  * MAIN CLASS - PalindromeCheckerApp
- * UC6: Queue + Stack Based Palindrome Check
+ * UC8: Linked List Based Palindrome Checker
  *
  * Description:
  * This class represents the palindrome checker app
  *
  * At this stage, the application:
- * - Validates a palindrome using a Deque by
- * - comparing front and rear characters directly.
+ * - This class validates a palindrome using a LinkedListy
+ * - by comparing first and last characters.
  * - Displays formatted result on console
  *
  *
  * @author Shrey Sharma
- * @version 7.0
+ * @version 8.0
  */
 
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.LinkedList;
 
 public class PalindromeCheckerApp {
     public static void main(String[] args) {
-        String input = "refer";
-        Deque<Character> deque = new ArrayDeque<>();
+
+        String input = "level";
+        LinkedList<Character> list = new LinkedList<>();
 
         for (char c : input.toCharArray()) {
-            deque.add(c);
+            list.add(c);
         }
 
         boolean isPalindrome = true;
 
-        while (deque.size() > 1) {
-
-            if (deque.removeFirst() != deque.removeLast()) {
+        while (list.size() > 1) {
+            if (list.removeFirst() != list.removeLast()) {
                 isPalindrome = false;
                 break;
             }
         }
-        
+
         System.out.println("Input : " + input);
         System.out.println("Is Palindrome? : " + isPalindrome);
     }
