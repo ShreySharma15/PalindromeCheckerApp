@@ -6,45 +6,90 @@
  * This class represents the palindrome checker app
  *
  * At this stage, the application:
- * - Validates a palindrome using reversing a string
- * - Captures execution start and end time and calculates total execution duration
- * - Calculate and displays formatted result on console
+ * - Validates a palindrome
+ * - Chooses an algorithm dynamically during runtime
+ * - Displays formatted result on console
  *
  *
  * @author Shrey Sharma
- * @version 10.0
+ * @version 11.0
  */
+
+
+import java.util.*;
 
 
 public class PalindromeCheckerApp {
     public static void main(String[] args) {
-        String input = "level";
-        long start = System.nanoTime();
-        boolean reversePalindrome = reverseIsPalindrome(input);
-        long end = System.nanoTime();
-        long duration = end - start;
+        String input = "racecar";
 
         System.out.println("Input : " + input);
-        System.out.println("Is Palindrome? : " + reversePalindrome);
-        System.out.println("Execution time: " + duration + " ns");
+
+        // Hardcoded strategies
+        PalindromeStrategy stackStrategy = new StackStrategy();
+        PalindromeStrategy dequeStrategy = new DequeStrategy();
+
+
+        runAndMeasure(stackStrategy, input);
+        runAndMeasure(dequeStrategy, input);
+
     }
-    private static boolean reverseIsPalindrome(String input){
-        char[] reversed = new char[input.length()];
-        boolean isPalindrome = false;
-        for(int i = input.length() - 1; i >= 0; i--){
-            int j = input.length() - 1 - i;
-            reversed[j] = input.charAt(i);
+
+    // Method to measure execution time
+    private static void runAndMeasure(PalindromeStrategy strategy, String input) {
+
+        long startTime = System.nanoTime();
+
+        boolean result = strategy.check(input);
+
+        long endTime = System.nanoTime();
+
+        long executionTime = endTime - startTime;
+
+        System.out.println("\nAlgorithm: " + strategy.getClass().getSimpleName());
+        System.out.println("Is Palindrome : " + result);
+        System.out.println("Execution Time : " + executionTime + " ns");
+    }
+}
+
+
+interface PalindromeStrategy {
+    boolean check(String input);
+}
+
+class StackStrategy implements PalindromeStrategy {
+
+    @Override
+    public boolean check(String input) {
+
+        Stack<Character> stack = new Stack<>();
+        for (char c : input.toCharArray()) {
+            stack.push(c);
         }
-        String reverse = new String(reversed);
-        if(input.equalsIgnoreCase(reverse)){
-            isPalindrome = true;
+        for (char c : input.toCharArray()) {
+            if (c != stack.pop()) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+class DequeStrategy implements PalindromeStrategy {
+
+    @Override
+    public boolean check(String input) {
+
+        Deque<Character> deque = new ArrayDeque<>();
+        for (char c : input.toCharArray()) {
+            deque.addLast(c);
+        }
+        while (deque.size() > 1) {
+            if (!deque.removeFirst().equals(deque.removeLast())) {
+                return false;
+            }
         }
 
-        return isPalindrome;
+        return true;
     }
-
-    }
-
-
-
-
+}
