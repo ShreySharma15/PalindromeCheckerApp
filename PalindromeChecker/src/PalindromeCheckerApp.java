@@ -1,6 +1,6 @@
 /*
  * MAIN CLASS - PalindromeCheckerApp
- * UC12: Strategy Pattern for Palindrome Algorithms
+ * UC13: Performance Comparison
  *
  * Description:
  * This class represents the palindrome checker app
@@ -21,39 +21,34 @@ import java.util.*;
 
 public class PalindromeCheckerApp {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        String input = "racecar";
 
-        System.out.println("==== Palindrome Checker App (Strategy Pattern) ====");
-        System.out.print("Enter a string: ");
-        String input = scanner.nextLine();
+        System.out.println("Input : " + input);
 
-        System.out.println("Choose Algorithm:");
-        System.out.println("1. Stack Strategy");
-        System.out.println("2. Deque Strategy");
-        System.out.print("Enter choice (1 or 2): ");
+        // Hardcoded strategies
+        PalindromeStrategy stackStrategy = new StackStrategy();
+        PalindromeStrategy dequeStrategy = new DequeStrategy();
 
-        int choice = scanner.nextInt();
-        PalindromeStrategy strategy = null;
-        switch (choice) {
-            case 1:
-                strategy = new StackStrategy();
-                break;
-            case 2:
-                strategy = new DequeStrategy();
-                break;
-            default:
-                System.out.println("Invalid choice!");
-                System.exit(0);
-        }
+
+        runAndMeasure(stackStrategy, input);
+        runAndMeasure(dequeStrategy, input);
+
+    }
+
+    // Method to measure execution time
+    private static void runAndMeasure(PalindromeStrategy strategy, String input) {
+
+        long startTime = System.nanoTime();
+
         boolean result = strategy.check(input);
 
-        if (result) {
-            System.out.println("The string is a palindrome.");
-        } else {
-            System.out.println("The string is NOT a palindrome.");
-        }
+        long endTime = System.nanoTime();
 
-        scanner.close();
+        long executionTime = endTime - startTime;
+
+        System.out.println("\nAlgorithm: " + strategy.getClass().getSimpleName());
+        System.out.println("Is Palindrome : " + result);
+        System.out.println("Execution Time : " + executionTime + " ns");
     }
 }
 
